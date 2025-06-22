@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Ecommerce-
+        {% block title%}{% endblock title %} 
+       </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+  
+</head>
+
+<body>
+    <header>
+        <div class="navbar-container">
+            <h2 class="logo">Ecom</h2>
+            <nav class="nav-links">
+                <ul>
+                    <li><a href="{%url 'index' %}">Home</a></li>
+                    <li><a href="{%url 'about' %}">About</a></li>
+                    <li><a href="{%url 'contact' %}">Contact</a></li>
+                    <li><a href="">My Profile</a></li>
+                    <li><a href="">Checkout</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="login-button">Login</button>
+                <a href="">
+                    <img class="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
+                </a>
+            </div>
+            <p class="cart-count"">0</p>
+        </div>
+    </header>
+
+    {% block content %}
+    {% endblock content%}
+     
+</body>
+
+</html>
