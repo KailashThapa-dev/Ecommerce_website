@@ -25,7 +25,29 @@
                 </ul>
             </nav>
             <div class="nav-actions">
-                <button class="login-button">Login</button>
+                <div class="dropdown">
+                    <button class="login-button dropdown-toggle" onclick="toggleDropdown()">SignIn<img  class="sign-in-btn"  src="{%static 'images/sign_up.png' %}" alt=""> &#9662;</button>
+                    <div id="signinDropdown" class="dropdown-menu" style="display: none;">
+                        <a href="{% url 'signup' %}">Sign Up</a>
+                        <a href="{% url 'handlelogin' %}">Login</a>
+                        <a href="{% url 'handlelogout' %}" class="logout-link">Logout</a>
+                    </div>
+                </div>
+                <script>
+                    function toggleDropdown() {
+                        var dropdown = document.getElementById('signinDropdown');
+                        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    }
+                    // Optional: Close dropdown if clicked outside
+                    document.addEventListener('click', function(event) {
+                        var dropdown = document.getElementById('signinDropdown');
+                        var button = document.querySelector('.dropdown-toggle');
+                        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                            dropdown.style.display = 'none';
+                        }
+                    });
+                </script>
+             
                 <a href="">
                     <img class="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
                 </a>
