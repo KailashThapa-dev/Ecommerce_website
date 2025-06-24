@@ -1,39 +1,62 @@
 from django.shortcuts import render, redirect,HttpResponse
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 # Create your views here.
 def signup(request):
-    # print("Checking the signin works fine")
-    # if (request.method == "POST"):
-    #     print("it is a post request")
-    # else:
-    #     print("it is get method")
+    if request.method == "POST":
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+        confirm_password = request.POST.get('confirm_password', '')
 
-    if (request.method == "POST"):
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
+        if not email or not password or not confirm_password:
+            messages.warning(request, "All fields are required.")
+            return render(request, 'authentication/signup.html')
 
         if password != confirm_password:
-            return HttpResponse("Password is incorrect!")
-            # return render(request, 'auth/signup.html')
+            messages.warning(request, "Passwords do not match!")
+            return render(request, 'authentication/signup.html')
 
-        try: 
-            if User.objects.get(username = email):
-                return HttpResponse("Email is already exist!")
-                # return render(request, 'auth/signup.html')
+        if User.objects.filter(username=email).exists():
+            messages.warning(request, "Email already taken!")
+            return render(request, 'authentication/signup.html')
 
-        except Exception as identifier:
-            pass
-        user = User.objects.create_user(email, email, password)
-        user.save()
-        return HttpResponse("User is created",email)
-    return render(request,"authentication/signup.html")
+        try:
+            user = User.objects.create_user(username=email, email=email, password=password)
+            user.save()
+            messages.success(request, "Account created successfully!")
+            return redirect('handlelogin')
+        except Exception as e:
+            messages.error(request, "Error creating account. Please try again.")
+            return render(request, 'authentication/signup.html')
 
-
+    return render(request, "authentication/signup.html")
 def handlelogin(request):
-    return render(request,"authentication/login.html")
+    if request.method == "POST":
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '')
+        confirm_password = request.POST.get('confirm_password', '')
 
+        if not email or not password or not confirm_password:
+            messages.warning(request, "All fields are required.")
+            return render(request, 'authentication/login.html')
+
+        if password != confirm_password:
+            messages.warning(request, "Passwords do not match!")
+            return render(request, 'authentication/login.html')
+
+        from django.contrib.auth import authenticate, login
+
+        user = authenticate(request, username=email, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, "Logged in successfully!")
+            return redirect('/')
+        else:
+            messages.error(request, "Invalid email or password.")
+            return render(request, 'authentication/login.html')
+        
+    return render(request, "authentication/login.html")
 
 def handlelogout(request):
     return redirect(request, '/auth/login')
