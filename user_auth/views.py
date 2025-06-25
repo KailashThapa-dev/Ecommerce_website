@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect,HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 
+
 # Create your views here.
 def signup(request):
     if request.method == "POST":
@@ -31,19 +32,18 @@ def signup(request):
             return render(request, 'authentication/signup.html')
 
     return render(request, "authentication/signup.html")
+
+
 def handlelogin(request):
     if request.method == "POST":
         email = request.POST.get('email', '').strip()
         password = request.POST.get('password', '')
-        confirm_password = request.POST.get('confirm_password', '')
 
-        if not email or not password or not confirm_password:
+        if not email or not password:
             messages.warning(request, "All fields are required.")
             return render(request, 'authentication/login.html')
 
-        if password != confirm_password:
-            messages.warning(request, "Passwords do not match!")
-            return render(request, 'authentication/login.html')
+     
 
         from django.contrib.auth import authenticate, login
 
@@ -59,4 +59,7 @@ def handlelogin(request):
     return render(request, "authentication/login.html")
 
 def handlelogout(request):
-    return redirect(request, '/auth/login')
+    from django.contrib.auth import logout
+    logout(request)
+    messages.success(request, "Logged out successfully!")
+    return redirect('handlelogin')

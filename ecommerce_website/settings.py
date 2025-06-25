@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ecommerce_app',
     'user_auth',
+
     
 ]
 
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ecommerce_app.middleware.BlockAdminOnMainSiteMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce_website.urls'
@@ -133,6 +135,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -145,4 +150,16 @@ MESSAGE_TAGS = {
     messages.WARNING: "danger",
     messages.INFO: "info",
     messages.SUCCESS: "success",
+}
+
+# For the  database connection
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecommerce_db',  
+        'USER': 'root',
+        'PASSWORD': 'root',          
+        'HOST': '127.0.0.1',     
+        'PORT': '3306',
+    }
 }
