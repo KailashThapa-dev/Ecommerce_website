@@ -14,14 +14,14 @@
 <body>
     <header>
         <div class="navbar-container">
-            <h2 class="logo">Ecom</h2>
+            <h2 class="logo">ElecroLite</h2>
             <nav class="nav-links">
                 <ul>
                     <li><a href="{%url 'index' %}">Home</a></li>
                     <li><a href="{%url 'about' %}">About</a></li>
                     <li><a href="{%url 'contact' %}">Contact</a></li>
                     <li><a href="">My Profile</a></li>
-                    <li><a href="">Checkout</a></li>
+                    <li><a href="{%url 'checkout' %}">Checkout</a></li>
                 </ul>
             </nav>
             <div class="nav-actions">
@@ -30,7 +30,7 @@
                 {% else %}
                     <div class="dropdown">
                         <button class="login-button dropdown-toggle" onclick="toggleDropdown()">SignIn
-                            <img class="sign-in-btn" src="{% static 'images/sign_up.png' %}" alt=""> &#9662;
+                             &#9662;
                         </button>
                         <div id="signinDropdown" class="dropdown-menu" style="display: none;">
                             <a href="{% url 'signup' %}">Sign Up</a>
@@ -52,8 +52,8 @@
                         });
                     </script>
                 {% endif %}
-                <a href="">
-                    <img class="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
+                <a href="{% url 'cart' %}">
+                    <img  id= "cart-view" class="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
                 </a>
             </div>
             <p class="cart-count">0</p>
@@ -85,6 +85,8 @@
             </ul>
         </div>
     </footer>
+    <script src="{% static "js/main.js" %}" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title%}Cart{% endblock title %}
+{% load static%}
+{% block content%} 
+<div class="cart-header">
+    <button class="store-cart"><a href="{% url 'index' %}"> &larr; Continue Shopping</a></button>
+    <br>
+    <br>
+    <hr>
+    <div class="cart-header-items">
+    <h5>Item: <strong>3</strong></h5>
+    <h5>Total: <strong>Rs300</strong></h5>
+    <button class="checkout-cart"><a href="{% url 'checkout' %}">Checkout</a></button>
+</div>
+<div class="cart-details">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="td-first-child"> <img class="cross-img" src="{% static 'images/cross.png' %}" alt="product"><img src="{% static 'images/placeholder.png' %}" alt="product"></td>
+                <td>Product_name</td>
+                <td>Rs100</td>
+                <td  class="quantity"><strong>2</strong>
+                    <div class="quantity-image">
+                        <img src="{% static 'images/arrow-up.png' %}" alt="down-arrow" class="arrow-image">
+                        <img src="{% static 'images/arrow-down.png' %}" alt="uparrow" class="arrow-image">
+                    </div>
+                </td>
+                <td>Rs200</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock content%}
