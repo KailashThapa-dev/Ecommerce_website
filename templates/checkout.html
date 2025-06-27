@@ -7,8 +7,9 @@
     <div class="user-shipping-info">
         <form action="" id="form">
             <div class="user-info">
-                <input type="text" name="name" placeholder="Name.." required>
-                <input type="email" name="email" placeholder="Email.." required>
+                <input type="text" name="name" placeholder=" Enter Name.." required>
+                <input type="email" name="email" placeholder="Enter Email.." required>
+                
 
             </div>
             <hr>
@@ -19,6 +20,7 @@
                 <input type="text" name="address" placeholder="Address.." required>
                 <input type="text" name="city" placeholder="City.." required>
                 <input type="text" name="state" placeholder="State.." required>
+                <input type="text" name="phone" placeholder="Phone Number.." required>
                 <input type="text" name="zipcode" placeholder="Zip code.." required>
 
             </div>
@@ -37,21 +39,22 @@
         <table>
             <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Sub Total</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><img src="{% static 'images/placeholder.png' %}" alt="product"></td>
+                   
                     <td>Product_name</td>
+                    <td>Quantity</td>
                     <td>Rs100</td>
                 </tr>
             </tbody>
         </table>
-        <p>Items: <strong></strong></p>
-        <p>Total: Rs<strong></strong></p>
+        
+        <p style="display:flex; justify-content:flex-end;align-item:center;margin:23px">Total: <strong>Rs1000</strong></p>
         
     </div>
 

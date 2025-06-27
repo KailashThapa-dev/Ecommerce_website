@@ -56,11 +56,10 @@
                     <img  id= "cart-view" class="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
                 </a>
             </div>
-            <p class="cart-count">0</p>
+            <p class="cart-count" id ="count-cart"></p>
         </div>
     </header>
-    <p>User authenticated: {{ request.user.is_authenticated }}</p>
-     <p>Username: {{ request.user.username }}</p>
+    
      {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }}" style="background: #fff8e1; color: #444; border: 1px solid #ffe082; border-radius: 4px; padding: 10px 16px; margin: 18px auto 24px auto; max-width: 600px; font-size: 15px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">

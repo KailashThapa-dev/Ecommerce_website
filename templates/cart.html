@@ -1,43 +1,124 @@
 {% extends 'base.html' %}
-{% block title%}Cart{% endblock title %}
-{% load static%}
-{% block content%} 
+{% block title %}Cart{% endblock title %}
+{% load static %}
+{% block content %}
 <div class="cart-header">
     <button class="store-cart"><a href="{% url 'index' %}"> &larr; Continue Shopping</a></button>
-    <br>
-    <br>
-    <hr>
+    <br><br><hr>
+
     <div class="cart-header-items">
-    <h5>Item: <strong>3</strong></h5>
-    <h5>Total: <strong>Rs300</strong></h5>
-    <button class="checkout-cart"><a href="{% url 'checkout' %}">Checkout</a></button>
+        <h5 id="total-item"></h5>
+        <h5 id="total-payment"></h5>
+        <button class="checkout-cart"><a href="{% url 'checkout' %}">Checkout</a></button>
+    </div>
+
+    <div class="cart-details">
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="cart-item">
+                <!-- Items rendered by JS -->
+            </tbody>
+        </table>
+
+        <script>
+            const cart = JSON.parse(localStorage.getItem('cart')) || {};
+            const tbody = document.getElementById('cart-item');
+            let total = 0;
+            let totalItem = 0;
+
+            function renderCart() {
+                tbody.innerHTML = '';
+                total = 0;
+                totalItem = 0;
+
+                if (Object.keys(cart).length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5">Cart is empty!</td></tr>`;
+                } else {
+                    for (let id in cart) {
+                        const item = cart[id];
+                        const itemTotal = item.price * item.quantity;
+                        total += itemTotal;
+                        totalItem += item.quantity;
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td class="td-first-child">
+                                    <img class="cross-img" data-id="${id}" src="{% static 'images/cross.png' %}" alt="remove">
+                                    <img src="${item.image}" alt="product" width="60">
+                                </td>
+                                <td>${item.name}</td>
+                                <td>Rs${item.price.toFixed(2)}</td>
+                                <td class="quantity">
+                                    <strong class="current-qty">${item.quantity}</strong>
+                                    <div class="quantity-image">
+                                        <img src="{% static 'images/arrow-up.png' %}" class="arrow-image arrow-up">
+                                        <img src="{% static 'images/arrow-down.png' %}" class="arrow-image arrow-down">
+                                    </div>
+                                </td>
+                                <td>Rs${itemTotal.toFixed(2)}</td>
+                            </tr>`;
+                    }
+                }
+
+                document.getElementById('total-item').innerHTML = `Item(s): <strong>${totalItem}</strong>`;
+                document.getElementById('total-payment').innerHTML = `Total: <strong>Rs ${total.toFixed(2)}</strong>`;
+
+                attachQuantityListeners();
+                attachRemoveListeners();
+            }
+
+            function attachQuantityListeners() {
+                const incrementBtns = document.querySelectorAll('.arrow-up');
+                const decrementBtns = document.querySelectorAll('.arrow-down');
+                const qtyDisplays = document.querySelectorAll('.current-qty');
+                const productIds = Object.keys(cart);
+
+                incrementBtns.forEach((btn, index) => {
+                    btn.addEventListener('click', () => {
+                        const id = productIds[index];
+                        cart[id].quantity += 1;
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        renderCart();
+                    });
+                });
+
+                decrementBtns.forEach((btn, index) => {
+                    btn.addEventListener('click', () => {
+                        const id = productIds[index];
+                        cart[id].quantity -= 1;
+
+                        if (cart[id].quantity <= 0) {
+                            delete cart[id];
+                        }
+
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        renderCart();
+                    });
+                });
+            }
+
+            function attachRemoveListeners() {
+                document.querySelectorAll('.cross-img').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const productId = btn.getAttribute('data-id');
+                        delete cart[productId];
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        renderCart();
+                    });
+                });
+            }
+
+            
+            renderCart();
+        </script>
+    </div>
 </div>
-<div class="cart-details">
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th>Item</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="td-first-child"> <img class="cross-img" src="{% static 'images/cross.png' %}" alt="product"><img src="{% static 'images/placeholder.png' %}" alt="product"></td>
-                <td>Product_name</td>
-                <td>Rs100</td>
-                <td  class="quantity"><strong>2</strong>
-                    <div class="quantity-image">
-                        <img src="{% static 'images/arrow-up.png' %}" alt="down-arrow" class="arrow-image">
-                        <img src="{% static 'images/arrow-down.png' %}" alt="uparrow" class="arrow-image">
-                    </div>
-                </td>
-                <td>Rs200</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-</div>
-{% endblock content%}
+{% endblock content %}

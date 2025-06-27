@@ -635,19 +635,6 @@ button a {
     gap: 8px;
 }
 
-.shipping-info input[name="address"],
-.shipping-info input[name="city"],
-.shipping-info input[name="state"],
-.shipping-info input[name="zipcode"] {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 3px;
-    font-size: 15px;
-    background: #fafbfc;
-    margin-bottom: 8px;
-    margin-right: 10px;
-}
 
 .shipping-info {
     display: grid;
@@ -782,6 +769,11 @@ button a {
 }
 
 .category-btn:hover,
+.category-btn.active {
+    background: #ffd700;
+    color: #222;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.15);
+}
 .category-btn.active {
     background: #ffd700;
     color: #222;

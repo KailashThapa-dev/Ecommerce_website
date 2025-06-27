@@ -11,22 +11,58 @@
             </p>
             <a href="#featured-products" class="cta-btn">Shop Now</a>
         </div>
+        <div class="offer">
+        <div class="offer-section" style="background: #fffbe7; border-radius: 12px; box-shadow: 0 1px 8px rgba(255,215,0,0.08); padding: 1.5rem 2rem; margin: 1.5rem 0; display: flex; align-items: center; gap: 2rem;">
+          
+           
+          
+            {% with special_offer=None %}
+                {% for product in allProduct %}
+                    {% if product.product_name == "Acer Aspire 14" %}
+                        {% with special_offer=product %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+                {% if special_offer %}
+                    <img src="{{product.image.url }}" alt="Acer Aspire 14" style="width: 120px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                {% else %}
+                    <img src="{{product.image.url }}" alt="Special Offer" style="width: 120px; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+                {% endif %}
+            {% endwith %}
+            <div>
+                <h2 style="margin: 0 0 0.5rem 0; color: #d4af37;">Limited Time Offer!</h2>
+                <p style="margin: 0 0 1rem 0; color: #444; font-size: 1.1rem;">
+                    Get <strong>20% OFF</strong> on the <strong>Acer Aspire 14</strong> laptop.<br>
+                    Experience power and portability at an unbeatable price!
+                </p>
+                <a href="#featured-products" class="cta-btn" style="background: #ffd700; color: #222; padding: 0.6rem 1.4rem; border-radius: 6px; font-weight: 600; text-decoration: none; box-shadow: 0 1px 4px rgba(255,215,0,0.10);">
+                    Shop Now
+                </a>
+            </div>
+        </div>
+        </div>
 
     </div>
     <div class = "category">
     <div class="category-list">
-        <a href="{% url 'category' 'All' %}" class="category-btn">All</a>
-        <a href="{% url 'category' 'Laptop' %}" class="category-btn">Laptop</a>
-        <a href="{% url 'category' 'Airbud' %}" class="category-btn">Airbud</a>
-        <a href="{% url 'category' 'Speaker' %}" class="category-btn">Speaker</a>
-        <a href="{% url 'category' 'Smartwatch' %}" class="category-btn">Smartwatch</a>
-        <a href="{% url 'category' 'Other Accessories' %}" class="category-btn">Other Accessories</a>
+        <a href="{% url 'category' 'All' %}" class="category-btn {% if selected_category == 'All' %}active{% endif %}">All</a>
+        <a href="{% url 'category' 'Laptop' %}" class="category-btn {% if selected_category == 'Laptop' %}active{% endif %}">Laptop</a>
+        <a href="{% url 'category' 'Airbud' %}" class="category-btn {% if selected_category == 'Airbud' %}active{% endif %}">Airbud</a>
+        <a href="{% url 'category' 'Speaker' %}" class="category-btn {% if selected_category == 'Speaker' %}active{% endif %}">Speaker</a>
+        <a href="{% url 'category' 'Smartwatch' %}" class="category-btn {% if selected_category == 'Smartwatch' %}active{% endif %}">Smartwatch</a>
+        <a href="{% url 'category' 'Other Accessories' %}" class="category-btn {% if selected_category == 'Other Accessories' %}active{% endif %}">Other Accessories</a>
         
     
     </div>
     <div class = "product" id="featured-products" style="background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%); border-radius: 18px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); padding-bottom: 2rem;">
        </div>
-        <h2 style="text-align: center;">Feature Products</h2>
+        <h2 style="text-align: center;">
+            {% if selected_category == "All" %}
+                Feature Products
+            {% else %}
+                {{ selected_category }} Flash Sale
+            {% endif %}
+        </h2>
         {% if allProduct %}
             <div class="product-container">
                 {% for product in allProduct %}
@@ -34,9 +70,13 @@
                         <img src="{{ product.image.url }}" alt="{{ product.product_name }}">
                         <h3 id="name">{{ product.product_name }}</h3>
                         <p id ='price'>Price: <strong>RS{{ product.price }}</strong></p>
-              
-                        <div class="product-card-buttons">              
-                            <button id="product{{product.id}}" class = "addCart">Add to Cart</button>
+
+                        <div class="product-card-buttons">
+                            <button id="product{{product.id}}" class = "add-to-cart-btn" 
+                            data-id="{{product.product_id}}" data-name="{{product.product_name}}"
+                            data-price="{{product.price}}" 
+                            data-image ="{{product.image.url}}"
+                            >Add to Cart</button>
 
                             <button><a href="{{product.image.url}}" class="view-details-btn">View Details</a></button>
                         </div>
