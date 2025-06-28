@@ -1,0 +1,69 @@
+{% for order in orders %}
+    <div>
+        <h3>Order #{{ order.id }} - {{ order.status }}</h3>
+        <p>Delivery Status: 
+            {% if order.is_delivered %}
+                <span style="color:green">Delivered</span>
+            {% else %}
+                <span style="color:red">Not Delivered</span>
+            {% endif %}
+        </p>
+        <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.product.product_name }} x {{ item.quantity }} - Rs {{ item.price }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endfor %}
+<style>
+    .order-container {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid #27ae60;
+    }
+
+    .order-container h3 {
+        margin: 0 0 10px 0;
+        color: #2c3e50;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .order-container p {
+        margin: 0 0 15px 0;
+        color: #555;
+        font-size: 14px;
+    }
+
+    .order-container ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .order-container li {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .order-container li:last-child {
+        border-bottom: none;
+    }
+
+    .delivery-status {
+        font-weight: 600;
+    }
+
+    .delivered {
+        color: #27ae60 !important;
+    }
+
+    .not-delivered {
+        color: #e74c3c !important;
+    }
+</style>

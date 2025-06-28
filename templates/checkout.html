@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
-{% block title%}Checkout{% endblock title %}
+{% block title %}Checkout{% endblock title %}
 {% load static %}
-{% block content%} 
-
+{% block content %}
 <div class="checkout-main">
-    <div class="user-shipping-info">
-        <form action="" id="form">
-            <div class="user-info">
-                <input type="text" name="name" placeholder=" Enter Name.." required>
-                <input type="email" name="email" placeholder="Enter Email.." required>
-                
 
+    <!-- SHIPPING FORM -->
+    <div class="user-shipping-info">
+        <form id="form">
+            <div class="user-info">
+                <input type="text" name="name" placeholder="Enter Name.." required>
+                <input type="email" name="email" placeholder="Enter Email.." required>
             </div>
             <hr>
 
@@ -22,44 +21,120 @@
                 <input type="text" name="state" placeholder="State.." required>
                 <input type="text" name="phone" placeholder="Phone Number.." required>
                 <input type="text" name="zipcode" placeholder="Zip code.." required>
-
             </div>
             <hr>
             <input id="form-btn" type="submit" value="Continue">
         </form>
     </div>
-    <!-- This div is hidden it will show up when the form is filled -->
-     <div class="payment-option"><small>Payment Option</small></div>
+
+    <!-- PAYMENT OPTION (hidden initially) -->
+    <div class="payment-option" style="display: none;">
+        <small>Payment Option</small>
+    </div>
+
+    <!-- ORDER DETAILS -->
     <div class="checkout-order-details">
         <button class="back-to-cart"><a href="{% url 'cart' %}">&#x2190; Back to Cart</a></button>
         <hr>
         <h3>Order Details</h3>
         <hr>
         <div class="cart-details">
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Sub Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                   
-                    <td>Product_name</td>
-                    <td>Quantity</td>
-                    <td>Rs100</td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <p style="display:flex; justify-content:flex-end;align-item:center;margin:23px">Total: <strong>Rs1000</strong></p>
-        
-    </div>
-
-
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <!-- Dynamic rows -->
+                </tbody>
+            </table>
+            <p style="display:flex; justify-content:flex-end; margin:23px;" id="order-details-total">
+                Total: <strong>Rs0</strong>
+            </p>
+        </div>
     </div>
 </div>
 
-{% endblock content%}
+<!-- SCRIPT -->
+<script>
+    function getCSRFTToken() {
+        return document.cookie.split('; ')
+            .find(row => row.startsWith('csrftoken='))
+            .split('=')[1];
+    }
+
+    function renderCart() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+        const tbody = document.getElementById('tbody');
+        let total = 0;
+        tbody.innerHTML = '';
+
+        if (Object.keys(cart).length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3">Your cart is empty.</td></tr>`;
+        } else {
+            for (let id in cart) {
+                const item = cart[id];
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>Rs${subtotal}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        document.getElementById('order-details-total').innerHTML = `Total: <strong>Rs${total}</strong>`;
+    }
+
+    // On page load
+    document.addEventListener('DOMContentLoaded', renderCart);
+
+    // Form submission
+    document.getElementById('form-btn').addEventListener('click', function (event) {
+        event.preventDefault();
+        const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+        const shipping = {
+            name: document.querySelector('input[name="name"]').value,
+            email: document.querySelector('input[name="email"]').value,
+            address: document.querySelector('input[name="address"]').value,
+            city: document.querySelector('input[name="city"]').value,
+            state: document.querySelector('input[name="state"]').value,
+            zip: document.querySelector('input[name="zipcode"]').value,
+            phone: document.querySelector('input[name="phone"]').value,
+        };
+
+        fetch('/checkout/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFTToken()
+            },
+            body: JSON.stringify({ cart: cart, shipping: shipping })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                localStorage.removeItem('cart');
+                document.querySelector(".payment-option").style.display = "block";
+                alert("Order placed successfully!");
+                // Optional redirect
+                // window.location.href = `/order-summary/${data.order_id}/`;
+            } else {
+                alert("Error: " + (data.error || "Order failed."));
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Something went wrong. Try again.");
+        });
+    });
+</script>
+
+{% endblock content %}
