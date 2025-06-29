@@ -27,11 +27,11 @@
         </form>
     </div>
 
-    <!-- PAYMENT OPTION (hidden initially) -->
     <div class="payment-option" style="display: none;">
-        <small>Payment Option</small>
+        <h1>Payment Option</h1>
+        <h3>Select Payment Method</h3>
+   
     </div>
-
     <!-- ORDER DETAILS -->
     <div class="checkout-order-details">
         <button class="back-to-cart"><a href="{% url 'cart' %}">&#x2190; Back to Cart</a></button>
@@ -56,6 +56,8 @@
             </p>
         </div>
     </div>
+  
+
 </div>
 
 <!-- SCRIPT -->
@@ -106,7 +108,7 @@
             address: document.querySelector('input[name="address"]').value,
             city: document.querySelector('input[name="city"]').value,
             state: document.querySelector('input[name="state"]').value,
-            zip: document.querySelector('input[name="zipcode"]').value,
+            zipcode: document.querySelector('input[name="zipcode"]').value,
             phone: document.querySelector('input[name="phone"]').value,
         };
 
@@ -123,6 +125,7 @@
             if (data.success) {
                 localStorage.removeItem('cart');
                 document.querySelector(".payment-option").style.display = "block";
+                document.querySelector(".user-shipping-info").style.display = "none";
                 alert("Order placed successfully!");
                 // Optional redirect
                 // window.location.href = `/order-summary/${data.order_id}/`;

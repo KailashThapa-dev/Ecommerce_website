@@ -31,32 +31,47 @@ def checkout(request):
         return redirect('handlelogin')
     
     if request.method == 'POST':
-        data = json.loads(request.body)
-        cart = data.get('cart', [])
-        shipping = data.get('shipping', {})
-        order = Order.objects.create(user=request.user, status='Pending', is_delivered=False)
+        try:
+            data = json.loads(request.body)
+            cart = data.get('cart', {})
+            shipping = data.get('shipping', {})
+            
+            # Create order
+            order = Order.objects.create(user=request.user, status='Pending', is_delivered=False)
 
-        ShippingAddress.objects.create(
-            order=order,
-            name=shipping['name'],
-            email=shipping['email'],
-            address=shipping['address'],
-            city=shipping['city'],
-            state=shipping['state'],
-            zip_code=shipping['zipcode'],
-            phone=shipping['phone'],
-        )
-
-        for item in cart:
-            product = Product.objects.get(product_id=item['product_id'])
-            OrderItem.objects.create(
+            # Create shipping address
+            ShippingAddress.objects.create(
                 order=order,
-                product=product,
-                quantity=item['quantity'],
-                price=product.price
+                name=shipping['name'],
+                email=shipping['email'],
+                address=shipping['address'],
+                city=shipping['city'],
+                state=shipping['state'],
+                zip_code=shipping['zipcode'],
+                phone=shipping['phone'],
             )
 
-        return JsonResponse({'success': True})
+            # Create order items from cart
+            for product_id, item in cart.items():
+                try:
+                    product = Product.objects.get(product_id=int(product_id))
+                    OrderItem.objects.create(
+                        order=order,
+                        product=product,
+                        quantity=item['quantity'],
+                        price=product.price
+                    )
+                except (Product.DoesNotExist, ValueError, KeyError) as e:
+                    return JsonResponse({'success': False, 'error': f'Invalid product: {product_id}'}, status=400)
+
+            return JsonResponse({'success': True, 'order_id': order.id})
+            
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Invalid JSON data'}, status=400)
+        except KeyError as e:
+            return JsonResponse({'success': False, 'error': f'Missing required field: {e}'}, status=400)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
     # For GET request, we'll let JavaScript handle cart display
     return render(request, "checkout.html")
