@@ -167,3 +167,5 @@ DATABASES = {
         },
     }
 }
+
+LOGIN_URL = '/auth/login/'  # or whatever your login URL is
