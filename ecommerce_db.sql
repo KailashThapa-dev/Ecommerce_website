@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 29, 2025 at 08:25 PM
+-- Generation Time: Jul 01, 2025 at 02:19 PM
 -- Server version: 11.8.2-MariaDB
 -- PHP Version: 8.2.12
 
@@ -133,7 +133,7 @@ CREATE TABLE `auth_user` (
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
 (1, 'pbkdf2_sha256$1000000$lvDopbFOeiAKBItCZtIWOZ$i0psj/3Z4lCZGq14/v9EpmJnGFyEE1ejMhkSP4qqRew=', '2025-06-28 15:50:27.150855', 1, 'admin', '', '', 'admin@gmail.com', 1, 1, '2025-06-24 19:25:11.979946'),
-(2, 'pbkdf2_sha256$1000000$wOFaGglnAETEYi88svTOBf$Lqc4X9Dl7oY3O3NCXnKQRsd4iGZWQ6MS2eXsx7oUJJA=', '2025-06-29 17:15:45.883506', 0, 'test@gmail.com', '', '', 'test@gmail.com', 0, 1, '2025-06-24 19:27:41.160183');
+(2, 'pbkdf2_sha256$1000000$wOFaGglnAETEYi88svTOBf$Lqc4X9Dl7oY3O3NCXnKQRsd4iGZWQ6MS2eXsx7oUJJA=', '2025-07-01 10:09:14.844182', 0, 'test@gmail.com', '', '', 'test@gmail.com', 0, 1, '2025-06-24 19:27:41.160183');
 
 -- --------------------------------------------------------
 
@@ -281,7 +281,7 @@ CREATE TABLE `django_session` (
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
 ('dt6cabll0i86628j1eh89vbq0drnek87', '.eJxVjEEOwiAQRe_C2hAQhzIu3XsGAjODVA1NSrsy3l2bdKHb_977LxXTutS4dpnjyOqsjurwu-VED2kb4Htqt0nT1JZ5zHpT9E67vk4sz8vu_h3U1Ou3dkVYvEV0MORCAcPJDSYzggXATIBWSrZWxIRQfJDCFhwAGSIIHtX7A-UMN88:1uVYmA:ysHv7R0Km2OUz1hBOC8VJyL0W0qTlG5Sf13GfYQv7DY', '2025-07-12 16:51:38.190777'),
 ('nwkdh9o6xxgx6c10xj7abjru7wgm5q38', '.eJxVjEEOwiAQRe_C2hAQhzIu3XsGAjODVA1NSrsy3l2bdKHb_977LxXTutS4dpnjyOqsjurwu-VED2kb4Htqt0nT1JZ5zHpT9E67vk4sz8vu_h3U1Ou3dkVYvEV0MORCAcPJDSYzggXATIBWSrZWxIRQfJDCFhwAGSIIHtX7A-UMN88:1uV86o:een4AE5CNvrloF9cz5EcQIGMgRXZtkk3xF78mZaMNzw', '2025-07-11 12:23:10.973040'),
-('uv9pff9e7195c3b1udsew8w41omjnna4', '.eJxVjEEOwiAQRe_C2hAQhzIu3XsGAjODVA1NSrsy3l2bdKHb_977LxXTutS4dpnjyOqsjurwu-VED2kb4Htqt0nT1JZ5zHpT9E67vk4sz8vu_h3U1Ou3dkVYvEV0MORCAcPJDSYzggXATIBWSrZWxIRQfJDCFhwAGSIIHtX7A-UMN88:1uVvd3:TZWSF1cMQNAosp8r7utQMunnTgo9lgxlXh43Ok0f4Ig', '2025-07-13 17:15:45.885564');
+('ohykb3hzmvbl9vjofp150v47r9e9auog', '.eJxVjEEOwiAQRe_C2hAQhzIu3XsGAjODVA1NSrsy3l2bdKHb_977LxXTutS4dpnjyOqsjurwu-VED2kb4Htqt0nT1JZ5zHpT9E67vk4sz8vu_h3U1Ou3dkVYvEV0MORCAcPJDSYzggXATIBWSrZWxIRQfJDCFhwAGSIIHtX7A-UMN88:1uWXvO:n1gwYaZRFgchvPE5cDDWBSL7aiUAaulqxEQlc4aPIuU', '2025-07-15 10:09:14.852614');
 
 -- --------------------------------------------------------
 
@@ -318,7 +318,31 @@ INSERT INTO `ecommerce_app_order` (`id`, `date_ordered`, `status`, `is_delivered
 (14, '2025-06-29 17:21:55.652956', 'Pending', 0, 2),
 (15, '2025-06-29 17:22:47.732422', 'Pending', 0, 2),
 (16, '2025-06-29 17:25:05.043468', 'Pending', 0, 2),
-(17, '2025-06-29 18:23:49.290005', 'Pending', 0, 2);
+(17, '2025-06-29 18:23:49.290005', 'Pending', 0, 2),
+(18, '2025-07-01 08:31:37.900616', 'Pending', 0, 2),
+(19, '2025-07-01 10:09:34.537656', 'Pending', 0, 2),
+(20, '2025-07-01 10:09:37.918876', 'Pending', 0, 2),
+(21, '2025-07-01 10:16:12.296522', 'Pending', 0, 2),
+(22, '2025-07-01 10:16:15.711116', 'Pending', 0, 2),
+(23, '2025-07-01 10:20:26.222969', 'Pending', 0, 2),
+(24, '2025-07-01 10:20:29.983763', 'Pending', 0, 2),
+(25, '2025-07-01 10:22:41.233029', 'Pending', 0, 2),
+(26, '2025-07-01 10:22:50.300853', 'Pending', 0, 2),
+(27, '2025-07-01 10:23:05.821320', 'Pending', 0, 2),
+(28, '2025-07-01 10:24:20.857889', 'Pending', 0, 2),
+(29, '2025-07-01 10:24:59.727220', 'Pending', 0, 2),
+(30, '2025-07-01 10:26:01.391156', 'Pending', 0, 2),
+(31, '2025-07-01 10:27:14.217405', 'Pending', 0, 2),
+(32, '2025-07-01 10:27:36.121097', 'Pending', 0, 2),
+(33, '2025-07-01 10:27:49.343031', 'Pending', 0, 2),
+(34, '2025-07-01 11:53:02.154905', 'Pending', 0, 2),
+(35, '2025-07-01 11:53:07.602106', 'Pending', 0, 2),
+(36, '2025-07-01 11:53:54.799922', 'Pending', 0, 2),
+(37, '2025-07-01 11:57:16.579261', 'Pending', 0, 2),
+(38, '2025-07-01 11:57:22.608520', 'Pending', 0, 2),
+(39, '2025-07-01 12:00:07.231971', 'Pending', 0, 2),
+(40, '2025-07-01 12:03:44.465743', 'Pending', 0, 2),
+(41, '2025-07-01 12:05:45.289222', 'Pending', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -344,7 +368,31 @@ INSERT INTO `ecommerce_app_orderitem` (`id`, `quantity`, `price`, `order_id`, `p
 (3, 5, 1000.00, 10, 4),
 (4, 1, 2500.00, 11, 3),
 (5, 3, 1399.00, 12, 2),
-(6, 1, 2500.00, 15, 3);
+(6, 1, 2500.00, 15, 3),
+(7, 1, 2500.00, 18, 3),
+(8, 1, 2500.00, 19, 3),
+(9, 1, 2500.00, 20, 3),
+(10, 1, 2500.00, 21, 3),
+(11, 1, 2500.00, 22, 3),
+(12, 1, 2500.00, 23, 3),
+(13, 1, 2500.00, 24, 3),
+(14, 1, 2500.00, 25, 3),
+(15, 1, 2500.00, 26, 3),
+(16, 1, 2500.00, 27, 3),
+(17, 1, 2500.00, 28, 3),
+(18, 1, 2500.00, 29, 3),
+(19, 1, 2500.00, 30, 3),
+(20, 1, 2500.00, 31, 3),
+(21, 1, 2500.00, 32, 3),
+(22, 1, 2500.00, 33, 3),
+(23, 1, 2500.00, 34, 3),
+(24, 1, 2500.00, 35, 3),
+(25, 1, 2500.00, 36, 3),
+(26, 1, 2500.00, 37, 3),
+(27, 1, 2500.00, 38, 3),
+(28, 7, 2500.00, 39, 3),
+(29, 7, 2500.00, 40, 3),
+(30, 1, 1000.00, 41, 4);
 
 -- --------------------------------------------------------
 
@@ -403,7 +451,31 @@ INSERT INTO `ecommerce_app_shippingaddress` (`id`, `name`, `email`, `address`, `
 (5, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', '', '44800', '9808109441', 14),
 (6, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', '', '44800', '9808109441', 15),
 (7, '', '', '', '', '', '', '', 16),
-(8, '', '', '', '', '', '', '', 17);
+(8, '', '', '', '', '', '', '', 17),
+(9, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 18),
+(10, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 19),
+(11, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 20),
+(12, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 21),
+(13, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 22),
+(14, '', '', '', '', '', '', '', 23),
+(15, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 24),
+(16, '', '', '', '', '', '', '', 25),
+(17, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 26),
+(18, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 27),
+(19, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 28),
+(20, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 29),
+(21, '', '', '', '', '', '', '', 30),
+(22, '', '', '', '', '', '', '', 31),
+(23, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 32),
+(24, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 33),
+(25, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 34),
+(26, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 35),
+(27, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 36),
+(28, '', '', '', '', '', '', '', 37),
+(29, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 38),
+(30, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 39),
+(31, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 40),
+(32, 'Kailash Thapa', 'kailassthapa73@gmail.com', 'Amaldol', 'Bhaktapur', 'Bagmati', '44800', '9808109441', 41);
 
 --
 -- Indexes for dumped tables
@@ -572,13 +644,13 @@ ALTER TABLE `django_migrations`
 -- AUTO_INCREMENT for table `ecommerce_app_order`
 --
 ALTER TABLE `ecommerce_app_order`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `ecommerce_app_orderitem`
 --
 ALTER TABLE `ecommerce_app_orderitem`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `ecommerce_app_product`
@@ -590,7 +662,7 @@ ALTER TABLE `ecommerce_app_product`
 -- AUTO_INCREMENT for table `ecommerce_app_shippingaddress`
 --
 ALTER TABLE `ecommerce_app_shippingaddress`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Constraints for dumped tables

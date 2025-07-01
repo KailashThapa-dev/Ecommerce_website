@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_list_or_404, get_object_or_404
 from ecommerce_app.models import Product
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -86,3 +86,82 @@ def category_view(request, category):
 def myProfile(request):
     
     return render(request,"myProfile.html")
+
+# from django.views.decorators.csrf import csrf_exempt
+# import requests
+# from .models import Order
+# import uuid
+
+# import hmac, hashlib, base64
+# def esewa_payment(request, order_id):
+#     order = get_object_or_404(Order, id=order_id, user=request.user)
+#     total = sum(item.quantity * item.product.price for item in order.items.all())
+#     product_code = str(order.id)
+#     merchant_code = 'EPAYTEST'
+#     secret_key = '8gBm/:&EnhH.1/q'
+#     total_amount = str(total)
+
+#     # Generate signature as per eSewa v2 docs
+#     raw_data = f"{total_amount},{product_code},{merchant_code}"
+#     signature = base64.b64encode(
+#         hmac.new(secret_key.encode(), raw_data.encode(), hashlib.sha256).digest()
+#     ).decode()
+
+#     context = {
+#         'totalAmount': total_amount,
+#         'productCode': product_code,
+#         'merchantCode': merchant_code,
+#         'signature': signature,
+#         'su': f"http://localhost:8000/esewa_verfity/{order.id}/",
+#         'fu': "http://localhost:8000/payment_failed/"
+#     }
+#     return render(request, "esewa_payment.html", context)
+
+# def esewa_verfity(request, order_id):
+#     ref_id = request.GET.get('refId')
+#     if not ref_id:
+#         return render(request, "payment_failed.html", {'error': 'Missing refId'})
+
+#     order = get_object_or_404(Order, id=order_id, user=request.user)
+#     total = int(sum(item.quantity * item.product.price for item in order.items.all()))
+#     product_code = str(order.id)
+#     merchant_code = 'EPAYTEST'
+#     secret_key = '8gBm/:&EnhH.1/q'
+#     total_amount = str(total)
+
+#     # Regenerate signature for verification
+#     raw_data = f"{total_amount},{product_code},{merchant_code}"
+#     signature = base64.b64encode(
+#         hmac.new(secret_key.encode(), raw_data.encode(), hashlib.sha256).digest()
+#     ).decode()
+
+#     payload = {
+#         'totalAmount': total_amount,
+#         'productCode': product_code,
+#         'merchantCode': merchant_code,
+#         'signature': signature,
+#         'refId': ref_id,
+#     }
+
+#     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+#     response = requests.post('https://rc-epay.esewa.com.np/api/epay/main/v2/form', data=payload, headers=headers)
+
+#     try:
+#         result = response.json()
+#         print("eSewa response:", result)
+
+#         if result.get('status') == 'COMPLETE':
+#             order.status = 'Paid'
+#             order.save()
+#             return render(request, "payment_success.html", {'order': order})
+#         else:
+#             return render(request, "payment_failed.html", {'error': result.get('message', 'Payment failed')})
+#     except Exception as e:
+#         return render(request, "payment_failed.html", {'error': str(e)})
+
+    
+# def payment_failed(request):
+#     return render(request,"payment_failed.html")
+
+
+ 

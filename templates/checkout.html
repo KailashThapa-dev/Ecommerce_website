@@ -123,16 +123,18 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                localStorage.removeItem('cart');
-                document.querySelector(".payment-option").style.display = "block";
-                document.querySelector(".user-shipping-info").style.display = "none";
-                alert("Order placed successfully!");
-                // Optional redirect
-                // window.location.href = `/order-summary/${data.order_id}/`;
-            } else {
-                alert("Error: " + (data.error || "Order failed."));
-            }
-        })
+              localStorage.removeItem('cart');
+              document.querySelector(".payment-option").style.display = "block";
+              document.querySelector(".user-shipping-info").style.display = "none";
+             alert("Order placed successfully!");
+            // window.location.href = `/order-summary/${data.order_id}/`;
+    } else {
+        alert("Error: " + (data.error || "Order failed."));
+    }
+})
+     
+        
+    
         .catch(error => {
             console.error("Error:", error);
             alert("Something went wrong. Try again.");

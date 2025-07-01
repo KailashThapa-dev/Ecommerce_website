@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Payment Successful{% endblock title %}
+{% load static %}
+{% block content %}
+<div class="payment-success-container" style="text-align:center; margin-top:60px;">
+    <img src="{% static 'images/payment_success.png' %}" alt="Payment Successful" style="width:120px; margin-bottom:20px;">
+    <h1 style="color:#5cb85c;">Payment Successful</h1>
+    <p>Thank you! Your payment has been processed successfully.</p>
+    <p>Your order is now confirmed and will be shipped soon.</p>
+    <a href="{% url 'index' %}" class="btn btn-success" style="margin-top:20px;">Back to Home</a>
+    <br>
+    <a href="{% url 'myProfile' %}" style="display:inline-block; margin-top:10px; color:#337ab7;">View My Orders</a>
+</div>
+{% endblock content %}
