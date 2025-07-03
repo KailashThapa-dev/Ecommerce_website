@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}View Details{% endblock title %}
+{% block content%}
+<div class="view-details-description">
+<div class="view-details">
+    <div class="image-details"></div>
+    <h3 class="name-details">{{product.product_name}}</h3>
+    <img src="{{product.image.url}}" alt="{{product.product_name}}">
+</div>
+    <div class="description-view">
+        <h3>Product Description</h3>
+        <p class="desc-view">{{product.desc}}</p>
+        <p class="price-view">Price:RS<strong>{{product.price}}</strong></p>
+        <button class="add-to-cart-btn"
+            data-id="{{ product.product_id }}"
+            data-name="{{ product.product_name }}"
+            data-price="{{ product.price }}"
+            data-image="{{ product.image.url }}">
+            Add to Cart
+        </button>
+
+    </div>
+
+</div>
+{% endblock content%}

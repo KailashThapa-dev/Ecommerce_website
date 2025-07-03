@@ -78,7 +78,9 @@
                             data-image ="{{product.image.url}}"
                             >Add to Cart</button>
 
-                            <button><a href="{{product.image.url}}" class="view-details-btn">View Details</a></button>
+                            <button>
+                                <a href="{% url 'view_details' product.product_id %}" class="view-details-btn">View Details</a>
+                            </button>
                         </div>
                     </div>
                 {% endfor %}

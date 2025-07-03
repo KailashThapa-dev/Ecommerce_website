@@ -126,7 +126,7 @@
               localStorage.removeItem('cart');
               document.querySelector(".payment-option").style.display = "block";
               document.querySelector(".user-shipping-info").style.display = "none";
-             alert("Order placed successfully!");
+              showMessageBox("Order placed successfully!");
               window.location.href = "/esewa_payment/";
             } else {
                 alert("Error: " + (data.error || "Order failed."));

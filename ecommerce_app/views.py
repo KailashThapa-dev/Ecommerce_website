@@ -150,5 +150,12 @@ def esewa_verify(request):
 def payment_failed(request):
     return render(request,"payment_failed.html")
 
+def view_details(request, product_id):
+    product = get_object_or_404(Product, product_id=product_id)
+    context = {
+        'product': product
+    }
+    return render(request, "view_details.html", context)
+
 
  

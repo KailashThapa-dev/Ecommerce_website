@@ -1,78 +1,12 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>eSewa Payment</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
-        .payment-container {
-            background: #fff;
-            max-width: 400px;
-            margin: 60px auto 0 auto;
-            padding: 32px 24px 24px 24px;
-            border-radius: 8px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-        .esewa-logo {
-            width: 120px;
-            margin-bottom: 16px;
-        }
-        .amount {
-            font-size: 1.3em;
-            margin: 18px 0 24px 0;
-            color: #388e3c;
-            font-weight: bold;
-        }
-        .pay-btn {
-            background: #388e3c;
-            color: #fff;
-            border: none;
-            padding: 12px 32px;
-            border-radius: 4px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .pay-btn:hover {
-            background: #256d27;
-        }
-        .info {
-            color: #555;
-            font-size: 0.97em;
-            margin-bottom: 18px;
-        }
-    </style>
-</head>
-<body>
-    <div class="payment-container">
-        <img src="https://esewa.com.np/common/images/esewa_logo.png" alt="eSewa" class="esewa-logo">
-        <h2>Pay with eSewa</h2>
-        <div class="info">
-            Please review your payment details and proceed to pay securely via eSewa.
-        </div>
-        <div class="amount">
-            Amount: <span>Rs {{ totalAmount }}</span>
-        </div>
-        <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
-            <input type="hidden" name="amount" value="{{ totalAmount }}">
-            <input type="hidden" name="totalAmount" value="{{ totalAmount }}">
-            <input type="hidden" name="productCode" value="{{ productCode }}">
-            <input type="hidden" name="merchantCode" value="{{ merchantCode }}">
-            <input type="hidden" name="signature" value="{{ signature }}">
-            <input type="hidden" name="successUrl" value="{{ success_url }}">
-            <input type="hidden" name="failureUrl" value="{{ failure_url }}">
-            <button type="submit" class="pay-btn">Pay with eSewa</button>
-        </form>
-        <div style="margin-top: 18px; font-size: 0.93em; color: #888;">
-            You will be redirected to eSewa to complete your payment.
-        </div>
-    </div>
-</body>
-</html>
+<form id="esewaForm" action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+    <input type="hidden" name="amount" value="{{ totalAmount }}">
+    <input type="hidden" name="totalAmount" value="{{ totalAmount }}">
+    <input type="hidden" name="productCode" value="{{ productCode }}">
+    <input type="hidden" name="merchantCode" value="{{ merchantCode }}">
+    <input type="hidden" name="signature" value="{{ signature }}">
+    <input type="hidden" name="successUrl" value="{{ success_url }}">
+    <input type="hidden" name="failureUrl" value="{{ failure_url }}">
+</form>
+<script>
+    document.getElementById('esewaForm').submit();
+</script>

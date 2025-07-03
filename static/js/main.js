@@ -18,7 +18,7 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
-        alert('Product added to cart!');
+        showMessageBox("Product is added to cart!");
         updateCartCount();
     });
 });
@@ -37,3 +37,39 @@ function updateCartCount() {
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCount();
 });
+// Message box function to show message when product is added
+function showMessageBox(message, duration = 2000) {
+    // Remove any existing message box
+    const existingBox = document.getElementById('cart-message-box');
+    if (existingBox) {
+        existingBox.remove();
+    }
+
+    // Create message box
+    const box = document.createElement('div');
+    box.id = 'cart-message-box';
+    box.textContent = message;
+    box.style.position = 'fixed';
+    box.style.top = '24px';
+    box.style.right = '24px';
+    box.style.background = '#323232';
+    box.style.color = '#fff';
+    box.style.padding = '14px 28px';
+    box.style.borderRadius = '6px';
+    box.style.boxShadow = '0 2px 12px rgba(0,0,0,0.15)';
+    box.style.zIndex = '9999';
+    box.style.fontSize = '16px';
+    box.style.opacity = '0.97';
+    box.style.transition = 'opacity 0.3s';
+
+    document.body.appendChild(box);
+
+    setTimeout(() => {
+        box.style.opacity = '0';
+        setTimeout(() => {
+            if (box.parentNode) {
+                box.parentNode.removeChild(box);
+            }
+        }, 300);
+    }, duration);
+}

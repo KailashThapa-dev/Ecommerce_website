@@ -779,3 +779,99 @@ button a {
     color: #222;
     box-shadow: 0 2px 8px rgba(255, 215, 0, 0.15);
 }
+
+
+/* css for the view details button */
+
+
+
+.view-details-description{
+    display: flex;
+    }
+    .view-details-description {
+        display: flex;
+        gap: 2.5rem;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 2.5rem auto;
+        max-width: 900px;
+        background: #f8fafc;
+        border-radius: 18px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+        padding: 2.5rem 2rem;
+    }
+    .view-details {
+        flex: 1 1 320px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.2rem;
+    }
+    .view-details img {
+        width: 320px;
+        height: 220px;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        background: #fff;
+    }
+    .name-details {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .description-view {
+        flex: 1 1 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        justify-content: flex-start;
+    }
+    .description-view h3 {
+        font-size: 1.2rem;
+        color: #d4af37;
+        margin-bottom: 0.2rem;
+    }
+    .desc-view {
+        color: #444;
+        font-size: 1.08rem;
+        margin-bottom: 0.5rem;
+    }
+    .price-view {
+        font-size: 1.15rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+    .add-to-cart-btn {
+        background: #ffd700;
+        color: #222;
+        padding: 0.7rem 1.6rem;
+        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 1.08rem;
+        box-shadow: 0 1px 4px rgba(255,215,0,0.10);
+        transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .add-to-cart-btn:hover {
+        background: #d4af37;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(212,175,55,0.15);
+    }
+    @media (max-width: 900px) {
+        .view-details-description {
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 1.5rem 0.5rem;
+        }
+        .view-details img {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+        }
+    }
+
