@@ -30,8 +30,10 @@
     <div class="payment-option" style="display: none;">
         <h1>Payment Option</h1>
         <h3>Select Payment Method</h3>
-   
+        <button id="esewa-btn" class="payment-btn">Pay with eSewa</button>
     </div>
+   
+    
     <!-- ORDER DETAILS -->
     <div class="checkout-order-details">
         <button class="back-to-cart"><a href="{% url 'cart' %}">&#x2190; Back to Cart</a></button>
@@ -59,14 +61,31 @@
   
 
 </div>
+<!-- Loading overlay -->
+<div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 8px; text-align: center;">
+        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 0 auto 1rem;"></div>
+        <p>Processing your order...</p>
+    </div>
+</div>
 
 <!-- SCRIPT -->
 <script>
-    function getCSRFTToken() {
-        return document.cookie.split('; ')
-            .find(row => row.startsWith('csrftoken='))
-            .split('=')[1];
+    function getCSRFToken() {
+        const cookieValue = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('csrftoken='));
+        return cookieValue ? cookieValue.split('=')[1] : null;
     }
+    function showLoading() {
+        document.getElementById('loading-overlay').style.display = 'block';
+    }
+
+    function hideLoading() {
+        document.getElementById('loading-overlay').style.display = 'none';
+    }
+
+
 
     function renderCart() {
         const cart = JSON.parse(localStorage.getItem('cart') || '{}');
@@ -101,42 +120,87 @@
     // Form submission
     document.getElementById('form-btn').addEventListener('click', function (event) {
         event.preventDefault();
+
         const cart = JSON.parse(localStorage.getItem('cart') || '{}');
-        const shipping = {
-            name: document.querySelector('input[name="name"]').value,
-            email: document.querySelector('input[name="email"]').value,
-            address: document.querySelector('input[name="address"]').value,
-            city: document.querySelector('input[name="city"]').value,
-            state: document.querySelector('input[name="state"]').value,
-            zipcode: document.querySelector('input[name="zipcode"]').value,
-            phone: document.querySelector('input[name="phone"]').value,
+        
+        //if (Object.keys(cart).length === 0) {
+           // alert('Your cart is empty!');
+            //return;
+        //}
+
+       // Validate form fields
+       const name = document.querySelector('input[name="name"]').value.trim();
+       const email = document.querySelector('input[name="email"]').value.trim();
+       const address = document.querySelector('input[name="address"]').value.trim();
+       const city = document.querySelector('input[name="city"]').value.trim();
+       const state = document.querySelector('input[name="state"]').value.trim();
+       const zipcode = document.querySelector('input[name="zipcode"]').value.trim();
+       const phone = document.querySelector('input[name="phone"]').value.trim();
+
+       if (!name || !email || !address || !city || !state || !zipcode || !phone) {
+           alert('Please fill in all required fields.');
+           return;
+       }
+       
+       const shipping = {
+        name: name,
+        email: email,
+        address: address,
+        city: city,
+        state: state,
+        zipcode: zipcode,
+        phone: phone,
         };
+
+    const csrfToken = getCSRFToken();
+    if (!csrfToken) {
+        alert('CSRF token not found. Please refresh the page and try again.');
+        return;
+    }
+
+
+    showLoading();
 
         fetch('/checkout/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCSRFTToken()
+                'X-CSRFToken': getCSRFToken()
             },
             body: JSON.stringify({ cart: cart, shipping: shipping })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
+            hideLoading();
             if (data.success) {
-              localStorage.removeItem('cart');
-              document.querySelector(".payment-option").style.display = "block";
-              document.querySelector(".user-shipping-info").style.display = "none";
-              showMessageBox("Order placed successfully!");
-              window.location.href = "/esewa_payment/";
+                document.querySelector(".payment-option").style.display = "block";
+                document.querySelector(".user-shipping-info").style.display = "none";
             } else {
-                alert("Error: " + (data.error || "Order failed."));
+                alert("Error: " + (data.error || "Order processing failed."));
             }
         })
         .catch(error => {
+            hideLoading();
             console.error("Error:", error);
-            alert("Something went wrong. Try again.");
+            alert("Something went wrong. Please try again. Error: " + error.message);
         });
     });
+
+    // eSewa payment button
+    document.addEventListener('click', function(event) {
+        if (event.target.id === 'esewa-btn') {
+            showLoading();
+            window.location.href = "/esewa_payment/";
+        }
+    });
+
+
+
 </script>
 
 {% endblock content %}

@@ -169,3 +169,6 @@ DATABASES = {
 }
 
 LOGIN_URL = '/auth/login/'  # or whatever your login URL is
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_SECURE = False  # Should be False for local dev

@@ -1,12 +1,65 @@
-<form id="esewaForm" action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
-    <input type="hidden" name="amount" value="{{ totalAmount }}">
-    <input type="hidden" name="totalAmount" value="{{ totalAmount }}">
-    <input type="hidden" name="productCode" value="{{ productCode }}">
-    <input type="hidden" name="merchantCode" value="{{ merchantCode }}">
-    <input type="hidden" name="signature" value="{{ signature }}">
-    <input type="hidden" name="successUrl" value="{{ success_url }}">
-    <input type="hidden" name="failureUrl" value="{{ failure_url }}">
-</form>
-<script>
-    document.getElementById('esewaForm').submit();
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Processing Payment...</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .payment-container {
+            text-align: center;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="spinner"></div>
+        <h2>Redirecting to eSewa...</h2>
+        <p>Please wait while we redirect you to the payment gateway.</p>
+        
+        <form id="esewaForm" action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+            <input type="hidden" name="amount" value="{{ amount }}">
+            <input type="hidden" name="tax_amount" value="{{ tax_amount }}">
+            <input type="hidden" name="total_amount" value="{{ total_amount }}">
+            <input type="hidden" name="transaction_uuid" value="{{ transaction_uuid }}">
+            <input type="hidden" name="product_code" value="{{ product_code }}">
+            <input type="hidden" name="product_service_charge" value="{{ product_service_charge }}">
+            <input type="hidden" name="product_delivery_charge" value="{{ product_delivery_charge }}">
+            <input type="hidden" name="success_url" value="{{ success_url }}">
+            <input type="hidden" name="failure_url" value="{{ failure_url }}">
+            <input type="hidden" name="signed_field_names" value="{{ signed_field_names }}">
+            <input type="hidden" name="signature" value="{{ signature }}">
+        </form>
+    </div>
+
+    <script>
+        // Auto-submit the form after a short delay
+        setTimeout(function() {
+            document.getElementById('esewaForm').submit();
+        }, 1000);
+    </script>
+</body>
+</html>

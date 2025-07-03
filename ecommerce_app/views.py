@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import hmac, hashlib, base64
 import requests
+import uuid
 
 # Create your views here.
 def index(request):
@@ -34,9 +35,9 @@ def checkout(request):
             data = json.loads(request.body)
             cart = data.get('cart', {})
             shipping = data.get('shipping', {})
-            # Store in session for use after payment
             request.session['cart'] = cart
             request.session['shipping'] = shipping
+            request.session.modified = True  # Ensure session is saved
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'success': False, 'error': str(e)})
@@ -63,90 +64,104 @@ def esewa_payment(request):
     # Calculate total
     total_amount = sum(Product.objects.get(product_id=int(pid)).price * item['quantity'] for pid, item in cart.items())
     total_amount = int(total_amount)
-    product_code = "ECOM"  # or any static code, or generate a temp order code
+ 
+ #Generate the unique transaction uuid
+   
+    transaction_uuid = str(uuid.uuid4())
+
+#Store transaction uuid in session for verification
+
+    request.session['transaction_uuid'] = transaction_uuid
+
+#Esewa configuration
+
+    product_code = "EPAYTEST"  # Use EPAYTEST for testing
     merchant_code = 'EPAYTEST'
     secret_key = '8gBm/:&EnhH.1/q'
 
-    raw_data = f"{total_amount},{product_code},{merchant_code}"
+    #Create message for the signature (format:total_amount,transaction_uuid,product_code)
+    message = f"total_amount={total_amount},transaction_uuid={transaction_uuid},product_code={product_code}"
+
+    #Generate the signature
     signature = base64.b64encode(
-        hmac.new(secret_key.encode(), raw_data.encode(), hashlib.sha256).digest()
+        hmac.new(secret_key.encode(), message.encode(), hashlib.sha256).digest()
     ).decode()
 
     context = {
-        'totalAmount': total_amount,
-        'productCode': product_code,
-        'merchantCode': merchant_code,
-        'signature': signature,
+        'amount': total_amount,
+        'tax_amount': 0,
+        'total_amount': total_amount,
+        'transaction_uuid': transaction_uuid,
+        'product_code': product_code,
+        'product_service_charge': 0,
+        'product_delivery_charge': 0,
         'success_url': request.build_absolute_uri('/esewa_verify/'),
-        'failure_url': request.build_absolute_uri('/payment_failed/')
+        'failure_url': request.build_absolute_uri('/payment_failed/'),
+        'signed_field_names': 'total_amount,transaction_uuid,product_code',
+        'signature': signature
     }
+    print("Session cart:", request.session.get('cart'))
+    print("Session shipping:", request.session.get('shipping'))
+                
     return render(request, "esewa_payment.html", context)
 
 @login_required
 def esewa_verify(request):
-    ref_id = request.GET.get('refId')
-    cart = request.session.get('cart')
-    shipping = request.session.get('shipping')
-    if not ref_id or not cart or not shipping:
-        return render(request, "payment_failed.html", {'error': 'Missing payment or session data.'})
-
-    total_amount = sum(Product.objects.get(product_id=int(pid)).price * item['quantity'] for pid, item in cart.items())
-    total_amount = int(total_amount)
-    product_code = "ECOM"
-    merchant_code = 'EPAYTEST'
-    secret_key = '8gBm/:&EnhH.1/q'
-
-    # Generate signature for verification
-    raw_data = f"{total_amount},{product_code},{merchant_code}"
-    signature = base64.b64encode(
-        hmac.new(secret_key.encode(), raw_data.encode(), hashlib.sha256).digest()
-    ).decode()
-
-    # Call eSewa API to verify payment
-    payload = {
-        'totalAmount': total_amount,
-        'productCode': product_code,
-        'merchantCode': merchant_code,
-        'signature': signature,
-        'refId': ref_id,
-    }
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    response = requests.post('https://rc-epay.esewa.com.np/api/epay/main/v2/form', data=payload, headers=headers)
+    data_param = request.GET.get('data')
+    if not data_param:
+        return render(request, "payment_failed.html", {'error': 'Missing payment data from eSewa.'})
 
     try:
-        result = response.json()
-        # Only create order if payment is confirmed by eSewa
-        if result.get('status') == 'COMPLETE':
-            order = Order.objects.create(user=request.user, status='Paid', is_delivered=False)
-            for pid, item in cart.items():
-                product = Product.objects.get(product_id=int(pid))
-                OrderItem.objects.create(
-                    order=order,
-                    product=product,
-                    quantity=item['quantity'],
-                    price=product.price
-                )
-            ShippingAddress.objects.create(
-                order=order,
-                name=shipping['name'],
-                email=shipping['email'],
-                address=shipping['address'],
-                city=shipping['city'],
-                state=shipping['state'],
-                zip_code=shipping['zipcode'],
-                phone=shipping['phone'],
-            )
-            # Clear session
-            del request.session['cart']
-            del request.session['shipping']
-            return render(request, "payment_successful.html", {'order': order})
-        else:
-            # Payment not successful
-            return render(request, "payment_failed.html", {'error': result.get('message', 'Payment failed')})
+        decoded = base64.b64decode(data_param).decode('utf-8')
+        esewa_data = json.loads(decoded)
     except Exception as e:
-        return render(request, "payment_failed.html", {'error': str(e)})
+        return render(request, "payment_failed.html", {'error': f'Failed to decode eSewa data: {str(e)}'})
 
-    
+    status = esewa_data.get('status')
+    transaction_uuid = esewa_data.get('transaction_uuid')
+    total_amount = esewa_data.get('total_amount')
+
+    cart = request.session.get('cart')
+    shipping = request.session.get('shipping')
+
+    if not cart or not shipping or not transaction_uuid:
+        return render(request, 'payment_failed.html', {'error': 'Missing payment or session data.'})
+
+    if status == 'COMPLETE':
+        # Create order
+        order = Order.objects.create(
+            user=request.user,
+            status='Paid',
+            is_delivered=False
+        )
+        # Create order items
+        for pid, item in cart.items():
+            product = Product.objects.get(product_id=int(pid))
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=item['quantity'],
+                price=product.price
+            )
+        # Create shipping address
+        ShippingAddress.objects.create(
+            order=order,
+            name=shipping['name'],
+            email=shipping['email'],
+            address=shipping['address'],
+            city=shipping['city'],
+            state=shipping['state'],
+            zip_code=shipping['zipcode'],
+            phone=shipping['phone'],
+        )
+        # Clear session
+        del request.session['cart']
+        del request.session['shipping']
+        del request.session['transaction_uuid']
+        return render(request, "payment_successful.html", {'order': order})
+    else:
+        return render(request, "payment_failed.html", {'error': f'Payment not complete. Status: {status}'})
+
 def payment_failed(request):
     return render(request,"payment_failed.html")
 
