@@ -50,9 +50,35 @@ def category_view(request, category):
         products = Product.objects.filter(category=category)
     return render(request, 'index.html', {'allProduct': products, 'selected_category': category})
 
+@login_required
 def myProfile(request):
-    
-    return render(request,"myProfile.html")
+    user = request.user
+    orders = Order.objects.filter(user=user).order_by('-date_ordered')
+    total_orders = orders.count()
+    total_spent = sum(
+        sum(item.price * item.quantity for item in order.items.all())
+        for order in orders
+    )
+    # Prepare order history data
+    order_history = []
+    for order in orders:
+        for item in order.items.all():
+            order_history.append({
+                'order_id': order.id,
+                'product': item.product.product_name,
+                'quantity': item.quantity,
+                'price': item.price,
+                'date': order.date_ordered,
+                'status': order.status,
+                'is_delivered': order.is_delivered,
+            })
+    context = {
+        'user': user,
+        'total_orders': total_orders,
+        'total_spent': total_spent,
+        'order_history': order_history,
+    }
+    return render(request, "myProfile.html", context)
 
 @login_required
 def esewa_payment(request):

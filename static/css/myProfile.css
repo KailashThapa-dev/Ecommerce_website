@@ -1,0 +1,88 @@
+.my-profile{
+    display: flex;
+    flex-direction: row;
+    gap: 2.5rem;
+    background: #faf9f6;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 2rem 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid #f0e9d2;
+    
+}
+.profile-image {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffd700;
+    box-shadow: 0 2px 8px rgba(212,175,55,0.10);
+    margin-bottom: 1rem;
+    background: #fff;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.profile{
+    display: felx;
+    flex-direction: column;
+    background: #faf9f6;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    padding: 2rem 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid #f0e9d2;
+}
+
+.order-history{
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 2rem 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid #f0e9d2;
+    flex: 1;
+    overflow-x: auto;
+}
+
+.order-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: #faf9f6;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 1rem;
+}
+
+.order-history-table th, .order-history-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #f0e9d2;
+}
+
+.order-history-table th {
+    
+    color: #222;
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.order-history-table tr:last-child td {
+    border-bottom: none;
+}
+
+.order-history-table tr:hover {
+    background: #fffbe7;
+    transition: background 0.2s;
+}
+
+.order-history h3 {
+    margin-bottom: 0.7rem;
+    color: #d4af37;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+}

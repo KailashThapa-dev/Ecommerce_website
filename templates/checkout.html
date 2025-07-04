@@ -30,7 +30,7 @@
     <div class="payment-option" style="display: none;">
         <h1>Payment Option</h1>
         <h3>Select Payment Method</h3>
-        <button id="esewa-btn" class="payment-btn">Pay with eSewa</button>
+        <button id="esewa-btn" class="payment-btn"><img src="{% static 'images/eSewa.png' %}" alt="Pay with eSewa"></button>
     </div>
    
     
@@ -180,6 +180,10 @@
             if (data.success) {
                 document.querySelector(".payment-option").style.display = "block";
                 document.querySelector(".user-shipping-info").style.display = "none";
+                // Clear cart in localStorage/sessionStorage if used
+                localStorage.removeItem('cart');
+                sessionStorage.removeItem('cart');
+                
             } else {
                 alert("Error: " + (data.error || "Order processing failed."));
             }

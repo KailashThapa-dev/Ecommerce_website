@@ -1,69 +1,54 @@
-{% for order in orders %}
-    <div>
-        <h3>Order #{{ order.id }} - {{ order.status }}</h3>
-        <p>Delivery Status: 
-            {% if order.is_delivered %}
-                <span style="color:green">Delivered</span>
-            {% else %}
-                <span style="color:red">Not Delivered</span>
-            {% endif %}
-        </p>
-        <ul>
-        {% for item in order.items.all %}
-            <li>{{ item.product.product_name }} x {{ item.quantity }} - Rs {{ item.price }}</li>
-        {% endfor %}
-        </ul>
+{% extends 'base.html' %}
+{% block title%}Cart{% endblock title %}
+{% load static %}
+{% block content%} 
+<div class="my-profile">
+  <div class="profile">
+    <div class="profile-name">  
+      <img class="profile-image" src="{% static 'images/profile.png' %}" alt="">
+      <h2 class="user-name">{{ user.username }}</h2>
+     
     </div>
-{% endfor %}
-<style>
-    .order-container {
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin-bottom: 20px;
-        border-left: 4px solid #27ae60;
-    }
-
-    .order-container h3 {
-        margin: 0 0 10px 0;
-        color: #2c3e50;
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .order-container p {
-        margin: 0 0 15px 0;
-        color: #555;
-        font-size: 14px;
-    }
-
-    .order-container ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .order-container li {
-        padding: 8px 0;
-        border-bottom: 1px solid #eee;
-        color: #666;
-        font-size: 14px;
-    }
-
-    .order-container li:last-child {
-        border-bottom: none;
-    }
-
-    .delivery-status {
-        font-weight: 600;
-    }
-
-    .delivered {
-        color: #27ae60 !important;
-    }
-
-    .not-delivered {
-        color: #e74c3c !important;
-    }
-</style>
+    <div class="profile-account">
+      <h2>Account Stats</h2>
+      <p>Total Orders: <strong>{{ total_orders }}</strong></p>
+      <p>Total Spent: <strong>Rs. {{ total_spent }}</strong></p>
+    </div>    
+  </div>
+  <div class="order-history">
+    <h3>Order History</h3>
+    <table class="order-history-table">
+      <tr>
+        <th>Order id</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Order Date</th>
+        <th>Payment Status</th>
+        <th>Delivery</th>
+      </tr>
+      {% for item in order_history %}
+      <tr>
+        <td>{{ item.order_id }}</td>
+        <td>{{ item.product }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.date|date:"Y-m-d H:i" }}</td>
+        <td>{{ item.status }}</td>
+        <td>
+          {% if item.is_delivered %}
+            <span style="color:green">Delivered</span>
+          {% else %}
+            <span style="color:red">Not Delivered</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7">No orders found.</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock content%}
