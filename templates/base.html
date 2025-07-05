@@ -85,6 +85,51 @@
             </ul>
         </div>
     </footer>
+    <script>
+        //Category dynamically display
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.category-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    let category = this.getAttribute('data-category');
+                    // Remove active class from all, add to clicked
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    fetch(`/category-json/${encodeURIComponent(category)}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const container = document.querySelector('.product-container');
+                            if (!container) return;
+                            if (data.products.length === 0) {
+                                container.innerHTML = '<p style="padding: 2rem; text-align: center; color: #888;">No products available.</p>';
+                                return;
+                            }
+                            let html = '';
+                            data.products.forEach(product => {
+                                html += `
+                                <div class="product-card">
+                                    <img src="${product.image_url}" alt="${product.name}">
+                                    <h3 id="name">${product.name}</h3>
+                                    <p id="price">Price: <strong>RS${product.price}</strong></p>
+                                    <div class="product-card-buttons">
+                                        <button id="product${product.id}" class="add-to-cart-btn"
+                                            data-id="${product.id}" data-name="${product.name}"
+                                            data-price="${product.price}" data-image="${product.image_url}">
+                                            Add to Cart
+                                        </button>
+                                        <button>
+                                            <a href="/view_details/${product.id}/" class="view-details-btn">View Details</a>
+                                        </button>
+                                    </div>
+                                </div>
+                                `;
+                            });
+                            container.innerHTML = html;
+                        });
+                });
+            });
+        });
+    </script>
     <script src="{% static "js/main.js" %}" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>

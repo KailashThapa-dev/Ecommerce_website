@@ -198,5 +198,21 @@ def view_details(request, product_id):
     }
     return render(request, "view_details.html", context)
 
+def category_products_json(request, category):
+    if category == "All":
+        products = Product.objects.all()
+    else:
+        products = Product.objects.filter(category=category)
+    products_data = [
+        {
+            'id': product.product_id,
+            'name': product.product_name,
+            'price': str(product.price),
+            'image_url': product.image.url,
+        }
+        for product in products
+    ]
+    return JsonResponse({'products': products_data})
+
 
  

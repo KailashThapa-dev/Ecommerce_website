@@ -1,26 +1,24 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || {};
 // Add to cart logic
-document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-    button.addEventListener('click', (event) => {
-        const btn = event.currentTarget;
-
-      
+document.addEventListener('click', function(event) {
+    // Check if the clicked element has the class 'add-to-cart-btn'
+    if (event.target.classList.contains('add-to-cart-btn')) {
+        const btn = event.target;
         const id = btn.dataset.id;
-        console.log(`Adding product with ID: ${id}`);
         const name = btn.dataset.name;
         const price = parseFloat(btn.dataset.price);
-        const image = btn.dataset.image
+        const image = btn.dataset.image;
 
         if (cart[id]) {
             cart[id].quantity += 1;
         } else {
-            cart[id] = { name: name, price: price, quantity: 1, image: image};
+            cart[id] = { name: name, price: price, quantity: 1, image: image };
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
         showMessageBox("Product is added to cart!");
         updateCartCount();
-    });
+    }
 });
 
 // Cart count updater
@@ -73,3 +71,5 @@ function showMessageBox(message, duration = 2000) {
         }, 300);
     }, duration);
 }
+
+
