@@ -48,6 +48,7 @@ A full-stack e-commerce platform built using **Django**, **HTML/CSS**, **JavaScr
 ---
 
 ## 📁 Project Structure
+```
 Ecommerce_website/
 │
 ├── README.md
@@ -89,7 +90,7 @@ Ecommerce_website/
 ├── templates/                   # HTML templates
 ├── static/                      # Static files (CSS, JS, images)
 ├── media/                       # Uploaded media files
-
+```
 
 
 ---
